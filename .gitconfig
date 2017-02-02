@@ -1,0 +1,20 @@
+[user]
+	email = stephen@stephencookdev.co.uk
+	name = Stephen Cook
+[push]
+	default = current
+[core]
+	editor = vim
+[color]
+	ui = auto
+[alias]
+	pullbase = "!f() { branchName=${1-master}; git checkout $branchName && git pull && git checkout - && git rebase -i $branchName; }; f"
+	pb = "!git pullbase"
+	co = checkout
+	s = status
+	recent = "!f() { count=${1-5}; git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print $3 }' | awk ' !x[$0]++' | head -n ${count}; }; f"
+	r = "!git recent"
+[diff]
+	tool = kdiff3
+[merge]
+	tool = kdiff3
