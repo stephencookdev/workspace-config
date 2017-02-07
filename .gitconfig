@@ -5,16 +5,18 @@
 	default = current
 [core]
 	editor = vim
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	ui = auto
 [alias]
-	pullbase = "!f() { branchName=${1-master}; git checkout $branchName && git pull && git checkout - && git rebase -i $branchName; }; f"
+	pullbase = !bash -c '"lastArg=${@: -1:1}; argsButLast=${@:0:${#@}}; branchName=${lastArg:-master}; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git rebase $argsButLast $branchName\" && git rebase $argsButLast $branchName"'
 	pb = "!git pullbase"
 	co = checkout
 	s = status
 	recent = "!f() { count=${1-5}; git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print $3 }' | awk ' !x[$0]++' | head -n ${count}; }; f"
 	r = "!git recent"
-[diff]
-	tool = kdiff3
+	d = diff
+	diffnames = "!git diff --name-status"
+	dn = "!git diffnames"
 [merge]
 	tool = kdiff3
