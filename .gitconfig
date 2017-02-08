@@ -9,7 +9,7 @@
 [color]
 	ui = auto
 [alias]
-	pullbase = !bash -c '"lastArg=${@: -1:1}; argsButLast=${@:0:${#@}}; branchName=${lastArg:-master}; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git rebase $argsButLast $branchName\" && git rebase $argsButLast $branchName"'
+	pullbase = !bash -c '"lastArg=${@: -1:1}; argsButLast=${@:0:${#@}}; branchName=${lastArg:-master}; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git rebase $argsButLast $branchName\" && git rebase $argsButLast $branchName"' --
 	pb = "!git pullbase"
 	co = checkout
 	s = status
