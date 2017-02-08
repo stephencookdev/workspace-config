@@ -16,6 +16,8 @@
 	recent = "!f() { count=${1-5}; git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print $3 }' | awk ' !x[$0]++' | head -n ${count}; }; f"
 	r = "!git recent"
 	d = diff
+	diffhtml = "!f() { diff2html -o stdout $@ | sed -e 's/<h1>.*<\\/h1>//' | bcat; }; f"
+	dh = "!git diffhtml"
 	diffnames = "!git diff --name-status"
 	dn = "!git diffnames"
 [merge]
