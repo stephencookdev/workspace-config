@@ -9,16 +9,21 @@
 [color]
 	ui = auto
 [alias]
-	pullbase = !bash -c '"lastArg=${@: -1:1}; argsButLast=${@:0:${#@}}; branchName=${lastArg:-master}; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git rebase $argsButLast $branchName\" && git rebase $argsButLast $branchName"' --
+	pullbase = !bash -c '"argCount=\"${#@}\"; if [ $argCount -eq \"0\" ] ; then branchName=\"master\" ; elif [ $argCount -eq \"1\" ] ; then branchName=$1 ; else branchName=${@: -1:1}; args=${@:1:${#@}}; echo $args; fi; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git rebase $args $branchName\" && git rebase $args $branchName"' --
 	pb = "!git pullbase"
+	pullmerge = !bash -c '"argCount=\"${#@}\"; if [ $argCount -eq \"0\" ] ; then branchName=\"master\" ; elif [ $argCount -eq \"1\" ] ; then branchName=$1 ; else branchName=${@: -1:1}; args=${@:1:${#@}}; echo $args; fi; echo \"Checking out $branchName\" && git checkout $branchName && echo \"Pulling ${branchName}\" && git pull && echo \"Checking out previous branch\" && git checkout - && echo \"Running cmd: git merge $args $branchName\" && git merge $args $branchName"' --
+	pm = "!git pullmerge"
 	co = checkout
 	s = status
-	recent = "!f() { count=${1-5}; git reflog | egrep -io 'moving from ([^[:space:]]+)' | awk '{ print $3 }' | awk ' !x[$0]++' | head -n ${count}; }; f"
+	recent = "!git for-each-ref --sort=-committerdate refs/heads --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)'|column -ts'|'"
 	r = "!git recent"
 	d = diff
 	diffhtml = "!f() { diff2html -o stdout $@ | sed -e 's/<h1>.*<\\/h1>//' | bcat; }; f"
 	dh = "!git diffhtml"
 	diffnames = "!git diff --name-status"
 	dn = "!git diffnames"
+	diffws = "!(git ls-files -o --exclude-standard | xargs -n 1 git diff --no-index /dev/null); git diff"
+	diffwshtml = "!git diffws | diff2html -i stdin -o stdout | sed -e 's/<h1>.*<\\/h1>//' | bcat"
+	lg = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 [merge]
 	tool = kdiff3
