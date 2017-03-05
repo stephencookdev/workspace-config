@@ -15,7 +15,7 @@
 	pm = "!git pullmerge"
 	co = checkout
 	s = status
-	recent = "!git for-each-ref --sort=-committerdate refs/heads --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)'|column -ts'|'"
+	recent = "!f() { git for-each-ref --sort=-committerdate refs/heads --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)'|column -ts'|' | head -n ${1:-10}; }; f"
 	r = "!git recent"
 	d = diff
 	diffhtml = "!f() { diff2html -o stdout $@ | sed -e 's/<h1>.*<\\/h1>//' | bcat; }; f"
